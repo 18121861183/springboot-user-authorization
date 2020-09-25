@@ -26,10 +26,10 @@ public class CommonOrganization implements Serializable {
     @Column(name = "leader_id", length = 100)
     private String leaderId;
 
-    @Column(name = "show")
-    private Integer show;
+    @Column(name = "is_show", columnDefinition = "int default 1")
+    private Integer isShow;
 
-    @Column(name = "disable")
+    @Column(name = "disable", columnDefinition = "int default 1")
     private Integer disable;
 
     @Column(name = "parent", length = 50)
@@ -84,11 +84,11 @@ public class CommonOrganization implements Serializable {
     }
 
     public Integer getShow() {
-        return show;
+        return isShow;
     }
 
-    public void setShow(Integer show) {
-        this.show = show;
+    public void setShow(Integer isShow) {
+        this.isShow = isShow;
     }
 
     public Integer getDisable() {

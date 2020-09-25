@@ -36,22 +36,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         CommonUser user = commonUserRepository.findByUsernameOrAlias(username, username);
         if (user == null) throw new UsernameNotFoundException("用户： " + username + " 找不到");
 
-
-        // [ROLE_USER, ROLE_ADMIN,..]
         List<CommonUserRole> userRoles = userRoleRepository.findCommonUserRolesByUserId(user.getId());
 
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-
+        List<CommonRole> roles = new ArrayList<>();
         assert userRoles!=null;
         for (CommonUserRole userRole: userRoles) {
             String roleId = userRole.getRoleId();
             CommonRole commonRole = commonRoleRepository.findCommonRoleById(roleId);
-            GrantedAuthority authority = new SimpleGrantedAuthority(commonRole.getRoleName());
-            grantList.add(authority);
+            roles.add(commonRole);
         }
 
-        UserDetails userDetails = (UserDetails) new CommonUser(user.getUsername(), user.getPassword(), grantList);
-
-        return new SecurityUser(user);
+        return new SecurityUser(user, roles);
     }
 }

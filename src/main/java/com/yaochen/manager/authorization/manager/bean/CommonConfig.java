@@ -20,9 +20,11 @@ public class CommonConfig implements Serializable {
     @Column(name = "config_value", length = 100)
     private String configValue;
 
+    @Column(name = "disable", columnDefinition = "int(1) default 1")
     private Integer disable;
 
-    private Integer show;
+    @Column(name = "is_show", columnDefinition = "int(1) default 1")
+    private Integer isShow;
 
     @Column(name = "type", length = 50)
     private String type;
@@ -71,11 +73,11 @@ public class CommonConfig implements Serializable {
     }
 
     public Integer getShow() {
-        return show;
+        return isShow;
     }
 
-    public void setShow(Integer show) {
-        this.show = show;
+    public void setShow(Integer isShow) {
+        this.isShow = isShow;
     }
 
     public String getType() {

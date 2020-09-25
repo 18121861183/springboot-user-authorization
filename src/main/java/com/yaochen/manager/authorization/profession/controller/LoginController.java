@@ -15,20 +15,9 @@ public class LoginController {
         return "login";
     }
 
-//    //登录
-//    @RequestMapping(value = "/login", method = RequestMethod.POST)
-//    public String login(@RequestParam(value = "userName") String userName,
-//                        @RequestParam(value = "userPsw") String userPsw,
-//                        RedirectAttributes redirectAttributes) {
-//        System.out.println(userName+"    "+userPsw);
-//        redirectAttributes.addFlashAttribute("userName",userName);
-//        return "redirect:index";
-//    }
-
-
     @RequestMapping("/index")
     public String welcomeIndex(@ModelAttribute("userName") String userName, Model model) {
-        model.addAttribute("userName",userName);
+        model.addAttribute("userName", userName);
         return "index";
     }
 

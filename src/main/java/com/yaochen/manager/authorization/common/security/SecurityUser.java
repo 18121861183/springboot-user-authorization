@@ -1,8 +1,7 @@
 package com.yaochen.manager.authorization.common.security;
 
+import com.yaochen.manager.authorization.manager.bean.CommonRole;
 import com.yaochen.manager.authorization.manager.bean.CommonUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,26 +10,50 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityUser extends CommonUser implements UserDetails {
+public class SecurityUser implements UserDetails {
 
-    static Logger log = LoggerFactory.getLogger(SecurityUser.class);
+    private CommonUser user;
+    private List<CommonRole> roles;
 
-    public SecurityUser(CommonUser user) {
-        if (user != null) {
-            this.setId(user.getId());
-            this.setUsername(user.getUsername());
-            this.setPassword(user.getPassword());
-
-        }
+    public SecurityUser(CommonUser user, List<CommonRole> roles) {
+        this.user = user;
+        this.roles = roles;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(this.getUsername()));
-        log.info("grantedAuthorities===>" + grantedAuthorities.toString());
-        return grantedAuthorities;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<CommonRole> roles = this.getRoles();
+        for (CommonRole role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
+        return authorities;
+    }
+
+    public CommonUser getUser() {
+        return user;
+    }
+
+    public void setUser(CommonUser user) {
+        this.user = user;
+    }
+
+    public void setRoles(List<CommonRole> roles) {
+        this.roles = roles;
+    }
+
+    public List<CommonRole> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
     }
 
     //账户是否未过期,过期无法验证
@@ -56,4 +79,5 @@ public class SecurityUser extends CommonUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
